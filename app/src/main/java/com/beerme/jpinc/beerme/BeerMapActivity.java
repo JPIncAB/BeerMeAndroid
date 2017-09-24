@@ -11,6 +11,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * An activity that displays a Google map with a marker (pin) to indicate a particular location.
@@ -52,11 +53,12 @@ public class BeerMapActivity extends AppCompatActivity {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
-                String location = String.format("Place: %s", place.getAddress());
+                LatLng coordinates = place.getLatLng();
+                String location = String.format("Beer me! @ https://www.google.com/maps/@?api=1&map_action=map&center=%s,%s&zoom=12", coordinates.latitude, coordinates.longitude);
 
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "Beer me! @ " + location);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, location);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
             }
